@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import {ActivityIndicator, Alert, Button, StyleSheet, Text, TextInput, ToastAndroid, View} from 'react-native';
 import firebase from '../database/firebaseDb';
 
-
 export default class Login extends Component {
 
   constructor() {
