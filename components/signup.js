@@ -1,4 +1,3 @@
-// components/signup.js
 
 import React, {Component} from 'react';
 import {ActivityIndicator, Alert, Button, StyleSheet, Text, TextInput, View, ToastAndroid} from 'react-native';

@@ -1,4 +1,3 @@
-// components/login.js
 
 import React, {Component} from 'react';
 import {ActivityIndicator, Alert, Button, StyleSheet, Text, TextInput, ToastAndroid, View} from 'react-native';
