@@ -1,7 +1,8 @@
-
 import React, {Component} from 'react';
-import {ActivityIndicator, Alert, Button, StyleSheet, Text, TextInput, View, ToastAndroid} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import firebase from '../database/firebaseDb';
+import CustomButton from './button/custom-button/CustomButton';
+import {TextField} from './react-native-material-textfield';
 
 export default class Signup extends Component {
 
@@ -42,13 +43,16 @@ export default class Signup extends Component {
               email: '',
               password: '',
             });
-            this.props.navigation.navigate('Dashboard');
+            // this.props.navigation.navigate('Dashboard');
+            res.user.sendEmailVerification().then(r => {
+              Alert.alert('Check your Inbox', 'Password verification link has been sent to the specified email');
+            });
           });
 
         })
         .catch(error => {
           console.log(error.message);
-          const stateCopy= {...this.state, isLoading:false};
+          const stateCopy = {...this.state, isLoading: false};
           this.setState(stateCopy);
           ToastAndroid.show(error.message, ToastAndroid.SHORT);
         });
@@ -66,30 +70,40 @@ export default class Signup extends Component {
     }
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Name"
+        <TextField
+          containerStyle={styles.inputStyle}
+          label="Name"
           value={this.state.displayName}
+          tintColor='#3740FE'
+          autoCompleteType='name'
           onChangeText={(val) => this.updateInputVal(val, 'displayName')}
         />
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Email"
+        <TextField
+          containerStyle={styles.inputStyle}
+          label="Email"
           value={this.state.email}
+          autoCapitalize='none'
+          tintColor='#3740FE'
+          autoCompleteType='email'
           onChangeText={(val) => this.updateInputVal(val, 'email')}
         />
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Password"
+        <TextField
+          containerStyle={styles.inputStyle}
+          label="Password"
           value={this.state.password}
           onChangeText={(val) => this.updateInputVal(val, 'password')}
-          maxLength={15}
+          characterRestriction={20}
+          maxLength={20}
+          autoCapitalize='none'
           secureTextEntry={true}
+          autoCompleteType='password'
+          tintColor='#3740FE'
         />
-        <Button
-          color="#3740FE"
-          title="Signup"
-          onPress={() => this.registerUser()}
+        <CustomButton
+          styleBG={styles.buttonBG}
+          styleTxt={styles.buttonTxt}
+          title="SIGN-UP"
+          click={() => this.registerUser()}
         />
 
         <Text
@@ -113,11 +127,8 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     width: '100%',
-    marginBottom: 15,
-    paddingBottom: 15,
+    // marginBottom: 15,
     alignSelf: 'center',
-    borderColor: '#ccc',
-    borderBottomWidth: 1,
   },
   loginText: {
     color: '#3740FE',
@@ -133,5 +144,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
+  },
+  buttonBG: {
+    marginTop: 20,
+    justifyContent: 'center',
+    height: 50,
+    backgroundColor: '#3740FE',
+    borderRadius: 30,
+  },
+  buttonTxt: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 18,
   },
 });

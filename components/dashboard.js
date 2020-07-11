@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import firebase from '../database/firebaseDb';
+import CustomButton from './button/custom-button/CustomButton';
 
 export default class Dashboard extends Component {
   constructor() {
@@ -29,10 +30,11 @@ export default class Dashboard extends Component {
           Hello, {this.state.displayName}
         </Text>
 
-        <Button
-          color="#3740FE"
+        <CustomButton
+          styleBG={styles.buttonBG}
+          styleTxt={styles.buttonTxt}
           title="Logout"
-          onPress={() => this.signOut()}
+          click={() => this.signOut()}
         />
       </View>
     );
@@ -49,7 +51,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   textStyle: {
-    fontSize: 15,
+    fontSize: 25,
     marginBottom: 20
+  },
+  buttonBG:{
+    marginTop: 20,
+    justifyContent: 'center',
+    height:50,
+    width:'50%',
+    backgroundColor:'#3740FE',
+    borderRadius:20
+  },
+  buttonTxt:{
+    alignSelf: 'center',
+    color:'white',
+    fontSize:18
   }
 });

@@ -1,7 +1,10 @@
-
 import React, {Component} from 'react';
-import {ActivityIndicator, Alert, Button, StyleSheet, Text, TextInput, ToastAndroid, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import firebase from '../database/firebaseDb';
+
+import CustomButton from './button/custom-button/CustomButton';
+import {TextField} from './react-native-material-textfield';
+
 
 export default class Login extends Component {
 
@@ -30,14 +33,34 @@ export default class Login extends Component {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then(() => {
-          console.log('User logged-in successfully!');
-          this.setState({
-            isLoading: false,
-            email: '',
-            password: '',
-          });
-          this.props.navigation.navigate('Dashboard');
+        .then((res) => {
+          if (!res.user.emailVerified) {
+            Alert.alert(
+              'Email address not Verified',
+              'Click RESEND to send the verification code again',
+              [
+                {
+                  text: 'RESEND',
+                  onPress: () => res.user.sendEmailVerification(),
+                },
+                {
+                  text: 'OK',
+                },
+              ],
+            );
+            firebase.auth().signOut().then(() => {
+            });
+            const stateCopy = {...this.state, isLoading: false};
+            this.setState(stateCopy);
+          } else {
+            console.log('User logged-in successfully!');
+            this.setState({
+              isLoading: false,
+              email: '',
+              password: '',
+            });
+            this.props.navigation.navigate('Dashboard');
+          }
         })
         .catch(error => {
             console.log(error.message);
@@ -59,24 +82,32 @@ export default class Login extends Component {
     }
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Email"
+        <TextField
+          containerStyle={styles.inputStyle}
+          label="Email"
           value={this.state.email}
+          autoCapitalize='none'
+          tintColor='#3740FE'
+          autoCompleteType='email'
           onChangeText={(val) => this.updateInputVal(val, 'email')}
         />
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Password"
+        <TextField
+          containerStyle={styles.inputStyle}
+          label="Password"
           value={this.state.password}
           onChangeText={(val) => this.updateInputVal(val, 'password')}
-          maxLength={15}
+          characterRestriction={20}
+          maxLength={20}
+          autoCapitalize='none'
           secureTextEntry={true}
+          autoCompleteType='password'
+          tintColor='#3740FE'
         />
-        <Button
-          color="#3740FE"
-          title="Signin"
-          onPress={() => this.userLogin()}
+        <CustomButton
+          styleBG={styles.buttonBG}
+          styleTxt={styles.buttonTxt}
+          title="SIGN-IN"
+          click={() => this.userLogin()}
         />
 
         <Text
@@ -100,11 +131,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     width: '100%',
-    marginBottom: 15,
-    paddingBottom: 15,
     alignSelf: 'center',
-    borderColor: '#ccc',
-    borderBottomWidth: 1,
   },
   loginText: {
     color: '#3740FE',
@@ -120,5 +147,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
+  },
+  buttonBG: {
+    marginTop: 20,
+    justifyContent: 'center',
+    height: 50,
+    backgroundColor: '#3740FE',
+    borderRadius: 30,
+  },
+  buttonTxt: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 18,
   },
 });
