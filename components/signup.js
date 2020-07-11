@@ -43,7 +43,6 @@ export default class Signup extends Component {
               email: '',
               password: '',
             });
-            // this.props.navigation.navigate('Dashboard');
             res.user.sendEmailVerification().then(r => {
               Alert.alert('Check your Inbox', 'Password verification link has been sent to the specified email');
             });
