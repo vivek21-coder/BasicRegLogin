@@ -49,9 +49,10 @@ export default class Signup extends Component {
               displayName: '',
               email: '',
               password: '',
+              confirmpassword:''
             });
             res.user.sendEmailVerification().then(() => {
-              Alert.alert('Check your Inbox', 'Password verification link has been sent to the specified email');
+              Alert.alert('Check your Inbox', 'Email verification link has been sent to the specified email');
             });
           });
 

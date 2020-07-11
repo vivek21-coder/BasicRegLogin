@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View, StatusBar} from 'react-native';
+import {ActivityIndicator, StatusBar, StyleSheet, Text, View} from 'react-native';
 import firebase from '../database/firebaseDb';
 
 import CustomButton from './button/custom-button/CustomButton';
@@ -14,12 +14,13 @@ export default class StartPage extends Component {
     };
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.props.navigation.navigate('Dashboard');
-      } else {
-        this.setState({
-          isLoading: false,
-        });
+        if (user.emailVerified) {
+          this.props.navigation.navigate('Dashboard');
+        }
       }
+      this.setState({
+        isLoading: false,
+      });
     });
   }
 

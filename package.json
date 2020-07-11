@@ -30,6 +30,7 @@
     "jest": "^26.1.0",
     "metro-react-native-babel-preset": "^0.60.0",
     "react-native-material-textfield": "^0.16.1",
+    "react-navigation": "^4.4.0",
     "react-test-renderer": "16.13.1"
   },
   "jest": {

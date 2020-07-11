@@ -40,11 +40,11 @@ export default class Login extends Component {
               'Click RESEND to send the verification code again',
               [
                 {
-                  text: 'RESEND',
-                  onPress: () => res.user.sendEmailVerification(),
+                  text: 'IGNORE',
                 },
                 {
-                  text: 'OK',
+                  text: 'RESEND',
+                  onPress: () => res.user.sendEmailVerification(),
                 },
               ],
             );
