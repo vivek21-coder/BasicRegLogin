@@ -12,6 +12,7 @@ export default class Signup extends Component {
       displayName: '',
       email: '',
       password: '',
+      confirmpassword:'',
       isLoading: false,
     };
   }
@@ -23,6 +24,12 @@ export default class Signup extends Component {
   };
 
   registerUser = () => {
+
+    if (this.state['password'] !== this.state['confirmpassword']){
+      Alert.alert('Password','Passwords do not match');
+      return;
+    }
+
     if (this.state.email === '' && this.state.password === '') {
       Alert.alert('Enter details to signup!');
     } else {
@@ -43,7 +50,7 @@ export default class Signup extends Component {
               email: '',
               password: '',
             });
-            res.user.sendEmailVerification().then(r => {
+            res.user.sendEmailVerification().then(() => {
               Alert.alert('Check your Inbox', 'Password verification link has been sent to the specified email');
             });
           });
@@ -98,6 +105,18 @@ export default class Signup extends Component {
           autoCompleteType='password'
           tintColor='#3740FE'
         />
+        <TextField
+          containerStyle={styles.inputStyleConfirm}
+          label="Confirm Password"
+          value={this.state.confirmpassword}
+          onChangeText={(val) => this.updateInputVal(val, 'confirmpassword')}
+          characterRestriction={20}
+          maxLength={20}
+          autoCapitalize='none'
+          secureTextEntry={true}
+          autoCompleteType='password'
+          tintColor='#3740FE'
+        />
         <CustomButton
           styleBG={styles.buttonBG}
           styleTxt={styles.buttonTxt}
@@ -126,7 +145,11 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     width: '100%',
-    // marginBottom: 15,
+    alignSelf: 'center',
+  },
+  inputStyleConfirm: {
+    marginTop:-16,
+    width: '100%',
     alignSelf: 'center',
   },
   loginText: {
